@@ -4,7 +4,7 @@ import com.example.demo.exception.BlogException;
 import com.example.demo.exception.BlogExceptionEnum;
 import com.example.demo.model.dao.ArticleMapper;
 import com.example.demo.model.dao.TagMapper;
-import com.example.demo.model.dto.AddArticleDTO;
+import com.example.demo.model.dto.ArticleDTO;
 import com.example.demo.model.pojo.Article;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -48,10 +48,10 @@ public class ArticleService {
     }
 
 
-    public Integer addArticle(AddArticleDTO addArticleDTO) {
+    public Integer addArticle(ArticleDTO articleDTO) {
         Integer response = 0;
         try {
-            response = articleMapper.addArticle(addArticleDTO);
+            response = articleMapper.addArticle(articleDTO);
         } catch (Throwable e) {
             if (response == 0) {
                 throw new BlogException(BlogExceptionEnum.CREATE_FAILED);

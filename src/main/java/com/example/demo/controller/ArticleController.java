@@ -2,12 +2,12 @@ package com.example.demo.controller;
 
 import com.example.demo.common.ApiResponse;
 import com.example.demo.common.Constant.CommonEnum;
-import com.example.demo.model.dto.AddArticleDTO;
+import com.example.demo.model.dto.ArticleDTO;
 import com.example.demo.model.dto.GetArticleDTO;
 import com.example.demo.service.ArticleService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.validation.annotation.Validated;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +17,7 @@ import javax.validation.constraints.NotNull;
 
 @RestController
 @RequestMapping("/article")
-//@Validated
+@Validated
 public class ArticleController {
 
     @Autowired
@@ -33,8 +33,8 @@ public class ArticleController {
     }
 
     @PostMapping("/add")
-    public ApiResponse addArticle(@Valid AddArticleDTO addArticleDTO) {
-        Integer response = articleService.addArticle(addArticleDTO);
+    public ApiResponse addArticle(@Validated(ArticleDTO.Insert.class) ArticleDTO articleDTO) {
+        Integer response = articleService.addArticle(articleDTO);
         return ApiResponse.success(response);
     }
 
