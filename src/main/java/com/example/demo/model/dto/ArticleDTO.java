@@ -9,7 +9,7 @@ public class AddArticleDTO {
     private String title;
 
 //    @NotNull(message = "描述不能为空")
-//    private String des;
+    private String des;
 
     @NotNull(message = "主图不能为空")
     private String main_img;
