@@ -82,4 +82,17 @@
         </trim>
     </insert>
 
+    <delete id="delArticle" parameterType="java.lang.Integer">
+        delete
+        from blog_article
+        where id = #{id, jdbcType=INTEGER}
+    </delete>
+
+    <delete id="batchDelArticle" parameterType="java.lang.String">
+        delete from blog_article
+        where id in
+        <foreach collection="ids" close=")" item="id" open="(" separator=",">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>

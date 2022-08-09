@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.model.dao.TagMapper">
+
     <resultMap id="BaseResultMap" type="com.example.demo.model.pojo.Tag">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
@@ -11,20 +12,29 @@
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime"/>
     </resultMap>
-    <sql id="Tag_Column_List">
+
+    <sql id="Base_Column_List">
         id
         ,name,des,color,bg_color,create_time, update_time,delete_time
     </sql>
+
     <select id="getArticleTagIds" parameterType="java.lang.Integer" resultType="java.lang.String">
         select tag_id
         from blog_tag_article
         where article_id = #{id,jdbcType=INTEGER}
     </select>
-    <select id="getTagsList" parameterType="java.lang.String" resultMap="BaseResultMap">
+
+    <select id="selectTagsListByIds" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
-        <include refid="Tag_Column_List"/>
+        <include refid="Base_Column_List"/>
         from blog_tag
         where id in
         <foreach collection="ids" open="(" item="id" separator="," close=")">#{id}</foreach>
+    </select>
+
+    <select id="selectTagList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from blog_tag
     </select>
 </mapper>

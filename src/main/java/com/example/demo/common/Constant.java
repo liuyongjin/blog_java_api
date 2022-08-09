@@ -1,5 +1,8 @@
 package com.example.demo.common;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Constant {
     public enum CommonEnum {
         CREATE_SUCCESS(200, "删除成功");

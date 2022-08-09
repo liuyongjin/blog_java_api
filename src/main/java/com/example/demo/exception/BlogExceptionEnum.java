@@ -3,6 +3,7 @@ package com.example.demo.exception;
 public enum BlogExceptionEnum {
     CREATE_FAILED(10011, "新增失败"),
     REQUEST_PARAM_ERROR(10012, "参数错误"),
+    DELETE_FAILED(10013, "删除失败"),
     SYSTEM_ERROR(20000, "系统异常，请从控制台或日志中查看具体错误信息");
     /**
      * 异常状态

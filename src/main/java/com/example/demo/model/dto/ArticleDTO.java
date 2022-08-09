@@ -15,8 +15,8 @@ public class ArticleDTO {
 
     }
 
-    @NotNull(message = "用户id不能为空", groups = Update.class)
-    @Null(message = "用户id必须为空", groups = Insert.class)
+    @NotNull(message = "id不能为空", groups = Update.class)
+    @Null(message = "id必须为空", groups = Insert.class)
     private Integer id;
 
     @NotNull(message = "文章标题不能为空")

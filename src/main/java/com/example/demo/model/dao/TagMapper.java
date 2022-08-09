@@ -9,5 +9,6 @@ import java.util.List;
 @Repository
 public interface TagMapper {
     List<String> getArticleTagIds(Integer id);
-    List<Tag> getTagsList(@Param("ids") List<String> ids);
+    List<Tag> selectTagsListByIds(@Param("ids") List<String> ids);
+    List<Tag> selectTagList();
 }

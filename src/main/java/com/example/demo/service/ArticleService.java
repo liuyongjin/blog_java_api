@@ -11,6 +11,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -41,7 +42,7 @@ public class ArticleService {
 //                }
 //            }
 //            System.out.println(ids);
-            article.setTags(tagMapper.getTagsList(idsArr));
+            article.setTags(tagMapper.selectTagsListByIds(idsArr));
         }
         PageInfo pageInfo = new PageInfo(articleList);
         return pageInfo;
@@ -59,4 +60,20 @@ public class ArticleService {
         }
         return response;
     }
+
+    public Integer delArticle(Integer id) {
+        Integer response = articleMapper.delArticle(id);
+        if (response == 0) {
+            throw new BlogException(BlogExceptionEnum.DELETE_FAILED);
+        }
+        return response;
+    }
+    public Integer batchDelArticle(Integer[] ids) {
+        Integer response = articleMapper.batchDelArticle(ids);
+        if (response == 0) {
+            throw new BlogException(BlogExceptionEnum.DELETE_FAILED);
+        }
+        return response;
+    }
+
 }

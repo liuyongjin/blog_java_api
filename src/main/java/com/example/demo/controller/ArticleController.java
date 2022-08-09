@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/article")
@@ -40,7 +42,14 @@ public class ArticleController {
 
     @PostMapping("/del")
     public ApiResponse delArticle(@NotNull(message = "id不能为空") Integer id) {
-        return ApiResponse.success(CommonEnum.CREATE_SUCCESS.getStatus(), CommonEnum.CREATE_SUCCESS.getMsg());
+        Integer response = articleService.delArticle(id);
+        return ApiResponse.success(CommonEnum.CREATE_SUCCESS.getStatus(), CommonEnum.CREATE_SUCCESS.getMsg(), response);
     }
 
+
+    @PostMapping("/bdel")
+    public ApiResponse batchDelArticle(@NotNull(message = "ids不能为空") Integer[] ids) {
+        Integer response = articleService.batchDelArticle(ids);
+        return ApiResponse.success(CommonEnum.CREATE_SUCCESS.getStatus(), CommonEnum.CREATE_SUCCESS.getMsg(), response);
+    }
 }
