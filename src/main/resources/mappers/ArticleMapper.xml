@@ -23,6 +23,63 @@
         select
         <include refid="Base_Column_List"/>
         from blog_article
+        -- select a.title,a.status,a.des from blog_tag_article as ta left join blog_article as a on a.id=ta.article_id
+        -- left join blog_tag as t on t.id=ta.tag_id
     </select>
+    <insert id="addArticle" parameterType="com.example.demo.model.dto.AddArticleDTO">
+        insert into blog_article
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null">
+                title,
+            </if>
+            <if test="status != null">
+                `status`,
+            </if>
+            <if test="des != null">
+                des,
+            </if>
+            <if test="main_img != null">
+                main_img,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="commentCount != null">
+                commentCount,
+            </if>
+            <if test="praiseCount != null">
+                praiseCount,
+            </if>
+            <if test="browseCount != null">
+                browseCount,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="des != null">
+                #{des,jdbcType=VARCHAR},
+            </if>
+            <if test="main_img != null">
+                #{main_img,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="commentCount != null">
+                #{commentCount,jdbcType=INTEGER},
+            </if>
+            <if test="praiseCount != null">
+                #{praiseCount,jdbcType=INTEGER},
+            </if>
+            <if test="browseCount != null">
+                #{browseCount,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
 
 </mapper>

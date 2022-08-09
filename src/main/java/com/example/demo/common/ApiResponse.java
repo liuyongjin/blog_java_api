@@ -1,5 +1,11 @@
 package com.example.demo.common;
 
+import com.example.demo.model.vo.ResPageInfoVO;
+import com.github.pagehelper.PageInfo;
+import lombok.Data;
+import org.springframework.beans.BeanUtils;
+
+@Data
 public class ApiResponse<T> {
     private Integer status;
 
@@ -13,18 +19,15 @@ public class ApiResponse<T> {
         this.status = status;
         this.msg = msg;
         this.data = data;
-        this.success = true;
     }
 
     public ApiResponse(Integer status, String msg) {
         this.status = status;
         this.msg = msg;
-        this.success = true;
     }
 
     public ApiResponse(T data) {
         this.data = data;
-        this.success = true;
     }
 
     public static <T> ApiResponse<T> success() {
@@ -37,8 +40,27 @@ public class ApiResponse<T> {
         return response;
     }
 
+    public static ApiResponse<ResPageInfoVO> success(PageInfo result) {
+        ResPageInfoVO resPageInfoVO = new ResPageInfoVO<>();
+        BeanUtils.copyProperties(result, resPageInfoVO);
+        resPageInfoVO.setPageIndex(result.getPageNum());
+        ApiResponse<ResPageInfoVO> response = new ApiResponse<>(OK_STATUS, OK_MSG, resPageInfoVO);
+        return response;
+    }
+
     public static <T> ApiResponse<T> success(Integer status, String msg, T data) {
         ApiResponse<T> response = new ApiResponse<>(status, msg, data);
+        return response;
+    }
+
+    public static <T> ApiResponse<T> success(Integer status, String msg) {
+        ApiResponse<T> response = new ApiResponse<>(status, msg);
+        return response;
+    }
+
+    public static <T> ApiResponse<T> error(Integer status, String msg) {
+        ApiResponse<T> response = new ApiResponse<>(status, msg);
+        response.success = false;
         return response;
     }
 
@@ -52,47 +74,5 @@ public class ApiResponse<T> {
         ApiResponse<T> response = new ApiResponse<>(data);
         response.success = false;
         return response;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
-
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
-    }
-
-    public Boolean getSuccess() {
-        return success;
-    }
-
-    public void setSuccess(Boolean success) {
-        this.success = success;
-    }
-
-    @Override
-    public String toString() {
-        return "ApiResponse{" +
-                "status=" + status +
-                ", success=" + success +
-                ", msg='" + msg + '\'' +
-                ", data=" + data +
-                '}';
     }
 }
