@@ -11,4 +11,5 @@ public interface TagMapper {
     List<String> getArticleTagIds(Integer id);
     List<Tag> selectTagsListByIds(@Param("ids") List<String> ids);
     List<Tag> selectTagList();
+    Integer insertTag(Tag tag);
 }

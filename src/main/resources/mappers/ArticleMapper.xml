@@ -44,14 +44,14 @@
             <if test="content != null">
                 content,
             </if>
-            <if test="commentCount != null">
-                commentCount,
+            <if test="comment_count != null">
+                comment_count,
             </if>
-            <if test="praiseCount != null">
-                praiseCount,
+            <if test="praise_count != null">
+                praise_count,
             </if>
-            <if test="browseCount != null">
-                browseCount,
+            <if test="browse_count != null">
+                browse_count,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -70,14 +70,14 @@
             <if test="content != null">
                 #{content,jdbcType=VARCHAR},
             </if>
-            <if test="commentCount != null">
-                #{commentCount,jdbcType=INTEGER},
+            <if test="comment_count != null">
+                #{comment_count,jdbcType=INTEGER},
             </if>
-            <if test="praiseCount != null">
-                #{praiseCount,jdbcType=INTEGER},
+            <if test="praise_count != null">
+                #{praise_count,jdbcType=INTEGER},
             </if>
-            <if test="browseCount != null">
-                #{browseCount,jdbcType=INTEGER},
+            <if test="browse_count != null">
+                #{browse_count,jdbcType=INTEGER},
             </if>
         </trim>
     </insert>

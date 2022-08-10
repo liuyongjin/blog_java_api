@@ -2,10 +2,12 @@ package com.example.demo.controller;
 
 import com.example.demo.common.ApiResponse;
 import com.example.demo.model.dto.GetArticleDTO;
+import com.example.demo.model.dto.TagDTO;
 import com.example.demo.service.TagService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,7 +15,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/tag")
-@Validated
+//@Validated
 public class TagController {
 
     @Autowired
@@ -28,4 +30,9 @@ public class TagController {
         return ApiResponse.success(tagList);
     }
 
+    @PostMapping("/add")
+    public ApiResponse addArticle(@Validated(TagDTO.Insert.class) TagDTO tagDTO) {
+        Integer response = tagService.addTag(tagDTO);
+        return ApiResponse.success(response);
+    }
 }

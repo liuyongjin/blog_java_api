@@ -11,7 +11,6 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -50,13 +49,17 @@ public class ArticleService {
 
 
     public Integer addArticle(ArticleDTO articleDTO) {
-        Integer response = 0;
-        try {
-            response = articleMapper.addArticle(articleDTO);
-        } catch (Throwable e) {
-            if (response == 0) {
-                throw new BlogException(BlogExceptionEnum.CREATE_FAILED);
-            }
+//        Integer response = 0;
+//        try {
+//            response = articleMapper.addArticle(articleDTO);
+//        } catch (Throwable e) {
+//            if (response == 0) {
+//                throw new BlogException(BlogExceptionEnum.CREATE_FAILED);
+//            }
+//        }
+        Integer response = articleMapper.addArticle(articleDTO);
+        if (response == 0) {
+            throw new BlogException(BlogExceptionEnum.CREATE_FAILED);
         }
         return response;
     }
@@ -68,6 +71,7 @@ public class ArticleService {
         }
         return response;
     }
+
     public Integer batchDelArticle(Integer[] ids) {
         Integer response = articleMapper.batchDelArticle(ids);
         if (response == 0) {

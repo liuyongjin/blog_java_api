@@ -19,24 +19,24 @@ public class ArticleDTO {
     @Null(message = "id必须为空", groups = Insert.class)
     private Integer id;
 
-    @NotNull(message = "文章标题不能为空")
+    @NotNull(message = "文章标题不能为空", groups = {TagDTO.Insert.class, TagDTO.Update.class})
     private String title;
 
     //    @NotNull(message = "描述不能为空")
     private String des;
 
-    @NotNull(message = "主图不能为空")
+    @NotNull(message = "主图不能为空", groups = {TagDTO.Insert.class, TagDTO.Update.class})
     private String main_img;
 
-    @NotNull(message = "内容不能为空")
+    @NotNull(message = "内容不能为空", groups = {TagDTO.Insert.class, TagDTO.Update.class})
     private String content;
 
     private Integer status;
 
-    private Integer commentCount;
+    private Integer comment_count;
 
-    private Integer praiseCount;
+    private Integer praise_count;
 
-    private Integer browseCount;
+    private Integer browse_count;
 
 }

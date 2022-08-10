@@ -7,15 +7,15 @@
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="des" jdbcType="VARCHAR" property="des"/>
         <result column="color" jdbcType="VARCHAR" property="color"/>
-        <result column="bg_color" jdbcType="VARCHAR" property="bgColor"/>
-        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
-        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
-        <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime"/>
+        <result column="bg_color" jdbcType="VARCHAR" property="bg_color"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="create_time"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="update_time"/>
+        <result column="delete_time" jdbcType="TIMESTAMP" property="delete_time"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id
-        ,name,des,color,bg_color,create_time, update_time,delete_time
+        ,`name`,des,color,bg_color, create_time, update_time,delete_time
     </sql>
 
     <select id="getArticleTagIds" parameterType="java.lang.Integer" resultType="java.lang.String">
@@ -37,4 +37,36 @@
         <include refid="Base_Column_List"/>
         from blog_tag
     </select>
+
+    <insert id="insertTag" parameterType="com.example.demo.model.pojo.Tag">
+        insert into blog_tag
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                `name`,
+            </if>
+            <if test="des != null">
+                des,
+            </if>
+            <if test="color != null">
+                color,
+            </if>
+            <if test="bg_color != null">
+                bg_color,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                #{name, jdbcType=VARCHAR},
+            </if>
+            <if test="des != null">
+                #{des, jdbcType=VARCHAR},
+            </if>
+            <if test="color != null">
+                #{color, jdbcType=VARCHAR},
+            </if>
+            <if test="bg_color != null">
+                #{bg_color, jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
 </mapper>
