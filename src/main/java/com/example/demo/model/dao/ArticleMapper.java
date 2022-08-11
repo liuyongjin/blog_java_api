@@ -12,6 +12,8 @@ import java.util.List;
 public interface ArticleMapper {
     List<Article> selectArticleList();
 
+    Article selectArticleById(Integer id);
+
     Integer addArticle(ArticleDTO articleDTO);
 
     Integer delArticle(Integer id);

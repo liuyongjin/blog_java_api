@@ -8,12 +8,12 @@
         <result column="des" jdbcType="VARCHAR" property="des"/>
         <result column="main_img" jdbcType="VARCHAR" property="main_img"/>
         <result column="content" jdbcType="VARCHAR" property="content"/>
-        <result column="comment_count" jdbcType="INTEGER" property="commentCount"/>
-        <result column="praise_count" jdbcType="INTEGER" property="praiseCount"/>
-        <result column="browse_count" jdbcType="INTEGER" property="browseCount"/>
-        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
-        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
-        <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime"/>
+        <result column="comment_count" jdbcType="INTEGER" property="comment_count"/>
+        <result column="praise_count" jdbcType="INTEGER" property="praise_count"/>
+        <result column="browse_count" jdbcType="INTEGER" property="browse_count"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="create_time"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="update_time"/>
+        <result column="delete_time" jdbcType="TIMESTAMP" property="delete_time"/>
     </resultMap>
     <sql id="Base_Column_List">
         id
@@ -26,6 +26,13 @@
         -- select a.title,a.status,a.des from blog_tag_article as ta left join blog_article as a on a.id=ta.article_id
         -- left join blog_tag as t on t.id=ta.tag_id
     </select>
+
+    <select id="selectArticleById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from blog_article where id = #{id, jdbcType=INTEGER}
+    </select>
+
     <insert id="addArticle" parameterType="com.example.demo.model.dto.ArticleDTO">
         insert into blog_article
         <trim prefix="(" suffix=")" suffixOverrides=",">

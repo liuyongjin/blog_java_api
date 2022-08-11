@@ -12,4 +12,9 @@ public interface TagMapper {
     List<Tag> selectTagsListByIds(@Param("ids") List<String> ids);
     List<Tag> selectTagList();
     Integer insertTag(Tag tag);
+    Integer updateTag(Tag tag);
+
+    Integer delTag(Integer id);
+
+    Integer batchDelTag(@Param("ids") Integer[] ids);
 }

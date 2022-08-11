@@ -4,6 +4,7 @@ import com.example.demo.common.ApiResponse;
 import com.example.demo.common.Constant.CommonEnum;
 import com.example.demo.model.dto.ArticleDTO;
 import com.example.demo.model.dto.GetArticleDTO;
+import com.example.demo.model.pojo.Article;
 import com.example.demo.service.ArticleService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,12 @@ public class ArticleController {
     public ApiResponse getArticleList(@Valid GetArticleDTO getArticleDTO) {
         PageInfo articleList = articleService.getArticleList(getArticleDTO.getPageIndex(), getArticleDTO.getPageSize());
         return ApiResponse.success(articleList);
+    }
+
+    @RequestMapping("/detail")
+    public ApiResponse getArticleDetail(@NotNull(message = "id不能为空") Integer id) {
+        Article response = articleService.getArticleDetail(id);
+        return ApiResponse.success(response);
     }
 
     @PostMapping("/add")

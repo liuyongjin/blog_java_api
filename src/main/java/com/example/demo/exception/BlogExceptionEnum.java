@@ -1,6 +1,8 @@
 package com.example.demo.exception;
 
 public enum BlogExceptionEnum {
+    SELECT_FAILED(10005, "查询失败"),
+    UPDATE_FAILED(10008, "更新失败"),
     CREATE_FAILED(10011, "新增失败"),
     REQUEST_PARAM_ERROR(10012, "参数错误"),
     DELETE_FAILED(10013, "删除失败"),

@@ -69,4 +69,37 @@
             </if>
         </trim>
     </insert>
+    <update id="updateTag">
+        update blog_tag
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="des != null">
+                des = #{des,jdbcType=VARCHAR},
+            </if>
+            <if test="color != null">
+                color = #{color,jdbcType=VARCHAR},
+            </if>
+            <if test="bg_color != null">
+                bg_color = #{bg_color,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+
+    <delete id="delTag" parameterType="java.lang.Integer">
+        delete
+        from blog_tag
+        where id = #{id, jdbcType=INTEGER}
+    </delete>
+
+    <delete id="batchDelTag" parameterType="java.lang.String">
+        delete from blog_tag
+        where id in
+        <foreach collection="ids" close=")" item="id" open="(" separator=",">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>

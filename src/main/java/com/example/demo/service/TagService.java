@@ -28,12 +28,35 @@ public class TagService {
     public Integer addTag(TagDTO tagDTO) {
         Tag tag = new Tag();
         BeanUtils.copyProperties(tagDTO, tag);
-        System.out.println(tag.toString());
         Integer response = tagMapper.insertTag(tag);
         if (response == 0) {
             throw new BlogException(BlogExceptionEnum.CREATE_FAILED);
         }
         return response;
     }
+    public Integer  editTag(TagDTO tagDTO) {
+        Tag tag = new Tag();
+        BeanUtils.copyProperties(tagDTO, tag);
+        Integer response = tagMapper.updateTag(tag);
+        if (response == 0) {
+            throw new BlogException(BlogExceptionEnum.UPDATE_FAILED);
+        }
+        return response;
+    }
 
+    public Integer delTag(Integer id) {
+        Integer response = tagMapper.delTag(id);
+        if (response == 0) {
+            throw new BlogException(BlogExceptionEnum.DELETE_FAILED);
+        }
+        return response;
+    }
+
+    public Integer batchDelTag(Integer[] ids) {
+        Integer response = tagMapper.batchDelTag(ids);
+        if (response == 0) {
+            throw new BlogException(BlogExceptionEnum.DELETE_FAILED);
+        }
+        return response;
+    }
 }

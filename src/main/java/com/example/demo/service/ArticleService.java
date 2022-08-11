@@ -47,6 +47,17 @@ public class ArticleService {
         return pageInfo;
     }
 
+    public Article getArticleDetail(Integer id) {
+        Article response = articleMapper.selectArticleById(id);
+        if (response != null) {
+            List<String> idsArr = tagMapper.getArticleTagIds(response.getId());
+            response.setTags(tagMapper.selectTagsListByIds(idsArr));
+        } else {
+            throw new BlogException(BlogExceptionEnum.SELECT_FAILED);
+        }
+        return response;
+    }
+
 
     public Integer addArticle(ArticleDTO articleDTO) {
 //        Integer response = 0;

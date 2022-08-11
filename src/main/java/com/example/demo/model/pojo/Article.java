@@ -20,19 +20,19 @@ public class Article {
 
     private String content;
 
-    private Integer commentCount;
+    private Integer comment_count;
 
-    private Integer praiseCount;
+    private Integer praise_count;
 
-    private Integer browseCount;
+    private Integer browse_count;
 
     private List<Tag> tags = new ArrayList<>();
 
-    private Date createTime;
+    private Date create_time;
 
-    private Date updateTime;
+    private Date update_time;
 
-    private Date deleteTime;
+    private Date delete_time;
 
 //    public Integer getId() {
 //        return id;
