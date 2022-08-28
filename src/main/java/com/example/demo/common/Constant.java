@@ -4,6 +4,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Constant {
+    public static final String USER_NAME = "username";
+    public static final String NICK_NAME = "nickname";
+
+
     public enum CommonEnum {
         CREATE_SUCCESS(200, "删除成功");
         private Integer status;

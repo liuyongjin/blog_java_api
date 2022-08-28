@@ -16,8 +16,8 @@ public class UserService {
         return userMapper.selectById(id);
     }
 
-    public User selectByName() {
-        return userMapper.selectByName();
+    public User selectByName(String username) {
+        return userMapper.selectByName(username);
     }
 
     public int updateUser(UpdateUserDTO updateUserDTO) {

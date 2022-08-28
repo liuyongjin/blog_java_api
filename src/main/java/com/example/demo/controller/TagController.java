@@ -5,6 +5,7 @@ import com.example.demo.common.Constant;
 import com.example.demo.model.dto.GetArticleDTO;
 import com.example.demo.model.dto.TagDTO;
 import com.example.demo.service.TagService;
+import com.example.demo.util.PassToken;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -26,6 +27,7 @@ public class TagController {
     /**
      * 查询标签列表
      */
+    @PassToken
     @RequestMapping("/list")
     public ApiResponse getTagList(@Valid GetArticleDTO getArticleDTO) {
         PageInfo tagList = tagService.getTagList(getArticleDTO.getPageIndex(), getArticleDTO.getPageSize());

@@ -16,10 +16,11 @@
         id
         , username, nickname, token, avatar, last_login_ip, last_login_time, create_time, update_time, delete_time
     </sql>
-    <select id="selectByName" resultMap="BaseResultMap">
+    <select id="selectByName" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from blog_user
+        where username = #{username,jdbcType=VARCHAR}
     </select>
 
     <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -50,12 +51,12 @@
             <if test="password != null">
                 `password`,
             </if>
-            <if test="create_time != null">
+            <!-- <if test="create_time != null">
                 create_time,
             </if>
             <if test="update_time != null">
                 update_time,
-            </if>
+            </if> -->
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="username != null">
@@ -64,12 +65,12 @@
             <if test="password != null">
                 #{password,jdbcType=VARCHAR},
             </if>
-            <if test="create_time != null">
+            <!-- <if test="create_time != null">
                 #{createTime,jdbcType=TIMESTAMP},
             </if>
             <if test="update_time != null">
                 #{updateTime,jdbcType=TIMESTAMP},
-            </if>
+            </if> -->
         </trim>
     </insert>
 
