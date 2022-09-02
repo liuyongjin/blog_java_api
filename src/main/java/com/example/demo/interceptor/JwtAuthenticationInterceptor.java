@@ -23,7 +23,7 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object object) throws Exception {
         // 从请求头中取出 token  这里需要和前端约定好把jwt放到请求头一个叫token的地方
         String token = httpServletRequest.getHeader("token");
-        System.out.println(token);
+//        System.out.println(token);
         // 如果不是映射到方法直接通过
         if (!(object instanceof HandlerMethod)) {
             return true;
@@ -39,7 +39,7 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
         }
         //默认全部检查
         else {
-            System.out.println("被jwt拦截需要验证");
+//            System.out.println("被jwt拦截需要验证");
             // 执行认证
             if (token == null) {
                 //这里其实是登录失效,没token了   这个错误也是我自定义的，读者需要自己修改
@@ -63,12 +63,12 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
             //获取载荷内容
             String username = JwtUtil.getClaimByName(token, Constant.USER_NAME).asString();
             String nickname = JwtUtil.getClaimByName(token, Constant.NICK_NAME).asString();
-            System.out.println(username);
+//            System.out.println(username);
 
             //放入attribute以便后面调用
             httpServletRequest.setAttribute(Constant.USER_NAME, username);
             httpServletRequest.setAttribute(Constant.NICK_NAME, nickname);
-            System.out.println(httpServletRequest.getAttribute(Constant.USER_NAME));
+//            System.out.println(httpServletRequest.getAttribute(Constant.USER_NAME));
 
             return true;
 

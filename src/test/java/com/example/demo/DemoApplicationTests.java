@@ -7,6 +7,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 class DemoApplicationTests {
 
 	@Test
+	void before(){
+		System.out.println("开始");
+	}
+
+	@Test
 	void contextLoads() {
 	}
 

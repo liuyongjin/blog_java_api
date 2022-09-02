@@ -6,11 +6,15 @@ import com.example.demo.model.dao.ArticleMapper;
 import com.example.demo.model.dao.TagMapper;
 import com.example.demo.model.dto.ArticleDTO;
 import com.example.demo.model.pojo.Article;
+import com.example.demo.util.RedisUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+//import java.io.Serializable;
+// implements Serializable
 import java.util.List;
 
 @Service
@@ -22,6 +26,11 @@ public class ArticleService {
     @Autowired
     TagMapper tagMapper;
 
+    @Autowired
+    RedisUtils redisUtils;
+
+
+    //    @Cacheable(value = "getArticleList", key = "#pageIndex+#pageSize")
     public PageInfo getArticleList(Integer pageIndex, Integer pageSize) {
         PageHelper.startPage(pageIndex, pageSize);
         List<Article> articleList = articleMapper.selectArticleList();
@@ -40,10 +49,14 @@ public class ArticleService {
 //                    ids.append(("," + idsArr.get(i)));
 //                }
 //            }
-//            System.out.println(ids);
-            article.setTags(tagMapper.selectTagsListByIds(idsArr));
+//            System.out.println(idsArr);
+            if (idsArr != null && idsArr.size() > 0) {
+                article.setTags(tagMapper.selectTagsListByIds(idsArr));
+            }
         }
+        System.out.println(redisUtils.get("article_list"));
         PageInfo pageInfo = new PageInfo(articleList);
+        redisUtils.set("article_list", pageInfo.toString());
         return pageInfo;
     }
 

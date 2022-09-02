@@ -24,6 +24,9 @@ public class ArticleController {
     @Autowired
     ArticleService articleService;
 
+//    @Autowired
+//    RedisCache redisCache;
+
     /**
      * 查询文章列表
      */

@@ -50,8 +50,12 @@ public class UserController {
     @PostMapping("/login")
     public ApiResponse login(@NotEmpty(message = "用户名不能为空") String username, @NotEmpty(message = "密码不能为空") String password) {
         try {
+            // TODO: 判断登录逻辑
+//            userService.login
+
+            // 如果成功了，聚合需要返回的信息
             User user = userService.selectByName(username);
-            System.out.println(user);
+//            System.out.println(user);
             //给分配一个token 然后返回
             String jwtToken = JwtUtil.createToken(user.getId(), user.getUsername(), user.getNickname());
             //我的处理方式是把token放到accountVO里去了

@@ -10,16 +10,18 @@ import com.example.demo.common.Constant;
 import com.example.demo.exception.BlogException;
 import com.example.demo.exception.BlogExceptionEnum;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.util.Calendar;
 import java.util.Date;
 
+@Component
 public class JwtUtil {
 
     public static String JWT_SALT;
 
     @Value("${custom.jwt.salt}")
-    public void setJwtSalt(String jwtSalt) {
+    public void setCustomJwtSalt(String jwtSalt) {
         JWT_SALT = jwtSalt;
     }
 
@@ -31,7 +33,7 @@ public class JwtUtil {
      * 加密密钥：这个人的id加上一串字符串
      */
     public static String createToken(String userId, String username, String nickname) {
-        System.out.println(JWT_SALT);
+//        System.out.println(JWT_SALT);
 
         Calendar nowTime = Calendar.getInstance();
         nowTime.add(Calendar.MINUTE, 30);
@@ -41,8 +43,7 @@ public class JwtUtil {
                 .withIssuedAt(new Date())    //发行时间
                 .withExpiresAt(expiresDate)  //有效时间
                 .withClaim(Constant.USER_NAME, username)    //载荷，随便写几个都可以
-                .withClaim(Constant.NICK_NAME, nickname)
-                .sign(Algorithm.HMAC256(userId + JWT_SALT));   //加密
+                .withClaim(Constant.NICK_NAME, nickname).sign(Algorithm.HMAC256(userId + JWT_SALT));   //加密
     }
 
     /**
