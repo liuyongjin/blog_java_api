@@ -36,7 +36,7 @@ public class JwtUtil {
 //        System.out.println(JWT_SALT);
 
         Calendar nowTime = Calendar.getInstance();
-        nowTime.add(Calendar.MINUTE, 30);
+        nowTime.add(Calendar.MINUTE, 300);
         Date expiresDate = nowTime.getTime();
 
         return JWT.create().withAudience(userId)   //签发对象

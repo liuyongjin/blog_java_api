@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.concurrent.TimeUnit;
+
 @Component
 public class RedisUtils {
 
@@ -25,8 +27,21 @@ public class RedisUtils {
      */
     public boolean set(final String key, String value) {
         boolean result = false;
+        Integer timeout = 20;
+        TimeUnit unit = TimeUnit.SECONDS;
         try {
-            redisTemplate.opsForValue().set(key, value);
+            redisTemplate.opsForValue().set(key, value, timeout, unit);
+            result = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public boolean set(final String key, String value, Integer timeout, TimeUnit unit) {
+        boolean result = false;
+        try {
+            redisTemplate.opsForValue().set(key, value, timeout, unit);
             result = true;
         } catch (Exception e) {
             e.printStackTrace();

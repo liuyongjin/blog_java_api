@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import com.alibaba.fastjson2.JSONObject;
+import com.example.demo.common.Constant;
 import com.example.demo.exception.BlogException;
 import com.example.demo.exception.BlogExceptionEnum;
 import com.example.demo.model.dao.ArticleMapper;
@@ -7,8 +9,10 @@ import com.example.demo.model.dao.TagMapper;
 import com.example.demo.model.dto.ArticleDTO;
 import com.example.demo.model.pojo.Article;
 import com.example.demo.util.RedisUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+//import org.apache.commons.lang.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -28,10 +32,18 @@ public class ArticleService {
 
     @Autowired
     RedisUtils redisUtils;
+    @Autowired
+    ObjectMapper objectMapper;
 
 
     //    @Cacheable(value = "getArticleList", key = "#pageIndex+#pageSize")
     public PageInfo getArticleList(Integer pageIndex, Integer pageSize) {
+        String jsonData = redisUtils.get(Constant.ARTICLE_LIST);
+        if (jsonData != null) {
+//            jsonData = StringEscapeUtils.unescapeHtml(jsonData);
+            return JSONObject.parseObject(jsonData, PageInfo.class);
+        }
+
         PageHelper.startPage(pageIndex, pageSize);
         List<Article> articleList = articleMapper.selectArticleList();
         for (Article article : articleList) {
@@ -54,9 +66,8 @@ public class ArticleService {
                 article.setTags(tagMapper.selectTagsListByIds(idsArr));
             }
         }
-        System.out.println(redisUtils.get("article_list"));
         PageInfo pageInfo = new PageInfo(articleList);
-        redisUtils.set("article_list", pageInfo.toString());
+        redisUtils.set(Constant.ARTICLE_LIST, JSONObject.toJSONString(pageInfo));
         return pageInfo;
     }
 

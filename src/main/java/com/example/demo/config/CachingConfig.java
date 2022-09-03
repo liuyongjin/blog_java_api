@@ -1,8 +1,6 @@
 package com.example.demo.config;
 
 import java.time.Duration;
-//import java.util.HashMap;
-//import java.util.Map;
 
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -24,13 +22,9 @@ public class CachingConfig {
 
         RedisCacheWriter redisCacheWriter = RedisCacheWriter.lockingRedisCacheWriter(connectionFactory);
         RedisCacheConfiguration cacheConfiguration = RedisCacheConfiguration.defaultCacheConfig();
-        cacheConfiguration = cacheConfiguration.entryTtl(Duration.ofSeconds(5));
+        cacheConfiguration = cacheConfiguration.entryTtl(Duration.ofSeconds(5L));
 
         RedisCacheManager redisCacheManager = new RedisCacheManager(redisCacheWriter, cacheConfiguration);
-//        Map<String, Integer> expires = new HashMap<>();
-//        expires.put("timeout",5);
-//        redisCacheManager.setDe(expires);
-
         return redisCacheManager;
     }
 }
