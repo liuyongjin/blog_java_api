@@ -3,10 +3,11 @@ package com.example.demo.model.pojo;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class User {
-//    暂时修改为String类型
+    //    暂时修改为String类型
     private String id;
 
     private String username;
@@ -17,10 +18,17 @@ public class User {
 
     private String avatar;
 
-    private Date lastLoginTime;
+    private List<String> authorities;
 
-    private Date createTime;
+    private List<Menu> menu_list;
 
-    private Date updateTime;
+    private List<Role> role_list;
 
+    private String last_login_ip;
+
+    private Date last_login_time;
+
+    private Date create_time;
+
+    private Date update_time;
 }

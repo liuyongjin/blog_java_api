@@ -9,6 +9,7 @@ import com.example.demo.model.dao.UserMapper;
 import com.example.demo.model.dto.UpdateUserDTO;
 import com.example.demo.service.UserService;
 import com.example.demo.util.JwtUtil;
+import com.example.demo.util.PassToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,7 @@ public class UserController {
     @Autowired
     UserMapper userMapper;
 
+    @PassToken
     @PostMapping("/current")
     public ApiResponse currentUser() {
         User response = userService.selectById(1);
