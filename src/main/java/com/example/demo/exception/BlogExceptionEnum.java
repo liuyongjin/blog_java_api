@@ -3,6 +3,8 @@ package com.example.demo.exception;
 public enum BlogExceptionEnum {
     TOKEN_ERROR(10001, "token无效"),
     TOKEN_PARSE_ERROR(10002, "token解析失败"),
+
+    FILE_UPLOAD_ERROR(10003, "文件上传失败"),
     SELECT_FAILED(10005, "查询失败"),
     NEED_LOGIN(10007, "需要登录"),
     USER_NOT_EXIST(10008, "用户不存在"),

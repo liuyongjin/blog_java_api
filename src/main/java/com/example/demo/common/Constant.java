@@ -6,9 +6,9 @@ import org.springframework.stereotype.Component;
 public class Constant {
     public static final String USER_NAME = "username";
     public static final String NICK_NAME = "nickname";
-
     public static final String ARTICLE_LIST = "article_list";
 
+    public static final String FILE_PATH = "C:\\Users\\Administrator\\Desktop\\demo\\src\\upload";
 
     public enum CommonEnum {
         CREATE_SUCCESS(200, "删除成功");
