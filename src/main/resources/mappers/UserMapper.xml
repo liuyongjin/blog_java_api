@@ -5,6 +5,7 @@
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="username" jdbcType="VARCHAR" property="username"/>
         <result column="nickname" jdbcType="VARCHAR" property="nickname"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
         <result column="token" jdbcType="VARCHAR" property="token"/>
         <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
         <result column="last_login_ip" jdbcType="VARCHAR" property="last_login_ip"/>
@@ -15,7 +16,7 @@
     </resultMap>
     <sql id="Base_Column_List">
         id
-        , username, nickname, token, avatar, last_login_ip, last_login_time, create_time, update_time, delete_time
+        , username, nickname, password, token, avatar, last_login_ip, last_login_time, create_time, update_time, delete_time
     </sql>
     <select id="selectByName" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
@@ -24,21 +25,36 @@
         where username = #{username,jdbcType=VARCHAR}
     </select>
 
-    <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap" >
+    <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from blog_user
         where id = #{id,jdbcType=INTEGER}
     </select>
 
-    <update id="updateUser">
+    <update id="updateUser" parameterType="com.example.demo.model.pojo.User">
         update blog_user
         <set>
             <if test="username != null">
-                username = #{username,jdbcType=VARCHAR},
+                username = #{username, jdbcType=VARCHAR},
+            </if>
+            <if test="nickname != null">
+                nickname = #{nickname,jdbcType=VARCHAR},
             </if>
             <if test="password != null">
                 `password` = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="token != null">
+                token = #{token,jdbcType=VARCHAR},
+            </if>
+            <if test="avatar != null">
+                avatar = #{avatar,jdbcType=VARCHAR},
+            </if>
+            <if test="last_login_ip != null">
+                last_login_ip = #{last_login_ip,jdbcType=VARCHAR},
+            </if>
+            <if test="last_login_time != null">
+                last_login_time = #{last_login_time,jdbcType=VARCHAR},
             </if>
         </set>
         where id = #{id,jdbcType=INTEGER}

@@ -1,26 +1,26 @@
 package com.example.demo.service;
 
+import com.example.demo.exception.BlogException;
+import com.example.demo.exception.BlogExceptionEnum;
+import com.example.demo.model.dao.LoginLogMapper;
 import com.example.demo.model.dao.PermissionMapper;
 import com.example.demo.model.dao.UserMapper;
-import com.example.demo.model.dto.AddUserDTO;
-import com.example.demo.model.pojo.Menu;
-import com.example.demo.model.pojo.Permission;
-import com.example.demo.model.pojo.Role;
-import com.example.demo.model.pojo.User;
-import com.example.demo.model.dto.UpdateUserDTO;
+import com.example.demo.model.dto.UserDTO;
+import com.example.demo.model.pojo.*;
+import com.example.demo.util.JwtUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class UserService {
     @Autowired
     UserMapper userMapper;
 
+    @Autowired
+    LoginLogMapper loginLogMapper;
     @Autowired
     PermissionMapper permissionMapper;
 
@@ -62,15 +62,49 @@ public class UserService {
         return userMapper.selectByName(username);
     }
 
-    public int updateUser(UpdateUserDTO updateUserDTO) {
-        return userMapper.updateUser(updateUserDTO);
+//    public int updateUser(UpdateUserDTO updateUserDTO) {
+//        return userMapper.updateUser(updateUserDTO);
+//    }
+
+    public String login(UserDTO userDTO, String ip) {
+        User user = userMapper.selectByName(userDTO.getUsername());
+        if (user == null) {
+            throw new BlogException(BlogExceptionEnum.USER_NOT_EXIST);
+        } else if (!Objects.equals(user.getPassword(), userDTO.getPassword())) {
+            throw new BlogException(BlogExceptionEnum.PASSWORD_ERROR);
+        }
+        // 生成token
+        String userId = user.getId() + "";
+        String username = user.getUsername();
+        String nickname = user.getNickname();
+        String jwtToken = JwtUtil.createToken(userId, username, nickname);
+        // 更新token和请求ip信息
+        User updateUser = new User();
+        updateUser.setId(user.getId());
+        updateUser.setToken(jwtToken);
+        updateUser.setLast_login_ip(ip);
+        // 处理成北京时间
+        Date date = new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 8);
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
+//        System.out.println(calendar.getTime().toString());
+//        Date date = new Date();
+//        System.out.println(date.toString());
+        updateUser.setLast_login_time(date);
+        userMapper.updateUser(updateUser);
+        // TODO: 刷新token，老token加入黑名单，实现单设备登录
+        // 记录登录信息
+        LoginLog loginLog = new LoginLog();
+        loginLog.setLogin_name(username);
+        loginLog.setLogin_ip(ip);
+        loginLogMapper.insertLoginLog(loginLog);
+        return jwtToken;
     }
 
-
-    public int register(AddUserDTO addUserDTO) {
-        AddUserDTO user = new AddUserDTO();
-        user.setUsername(addUserDTO.getUsername());
-        user.setPassword(addUserDTO.getPassword());
+    public int register(UserDTO userDTO) {
+        UserDTO user = new UserDTO();
+        user.setUsername(userDTO.getUsername());
+        user.setPassword(userDTO.getPassword());
         return userMapper.insertSelective(user);
     }
 

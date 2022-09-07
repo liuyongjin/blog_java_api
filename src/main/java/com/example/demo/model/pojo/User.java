@@ -7,12 +7,13 @@ import java.util.List;
 
 @Data
 public class User {
-    //    暂时修改为String类型
-    private String id;
+    private Integer id;
 
     private String username;
 
     private String nickname;
+
+    private String password;
 
     private String token;
 

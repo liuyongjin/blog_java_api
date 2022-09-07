@@ -33,8 +33,6 @@ public class JwtUtil {
      * 加密密钥：这个人的id加上一串字符串
      */
     public static String createToken(String userId, String username, String nickname) {
-//        System.out.println(JWT_SALT);
-
         Calendar nowTime = Calendar.getInstance();
         nowTime.add(Calendar.MINUTE, 300);
         Date expiresDate = nowTime.getTime();
