@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.common.Constant;
 import com.example.demo.exception.BlogException;
 import com.example.demo.exception.BlogExceptionEnum;
 import com.example.demo.model.dao.LoginLogMapper;
@@ -8,21 +9,31 @@ import com.example.demo.model.dao.UserMapper;
 import com.example.demo.model.dto.UserDTO;
 import com.example.demo.model.pojo.*;
 import com.example.demo.util.JwtUtil;
+import com.example.demo.util.RedisUtils;
+import com.example.demo.util.Toolkit;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class UserService {
     @Autowired
     UserMapper userMapper;
-
     @Autowired
     LoginLogMapper loginLogMapper;
     @Autowired
     PermissionMapper permissionMapper;
+
+    @Autowired
+    JwtUtil jwtUtil;
+
+    @Autowired
+    RedisUtils redisUtils;
 
     public User selectById(int id) {
         List<Permission> permissionList = permissionMapper.findPermissionByUserName(id);
@@ -58,26 +69,39 @@ public class UserService {
         return user;
     }
 
-    public User selectByName(String username) {
-        return userMapper.selectByName(username);
+    //    public User selectByName(String username) {
+//        return userMapper.selectByName(username);
+//    }
+    public int updateUser(UserDTO userDTO) {
+        User user = new User();
+        String username = userDTO.getUsername();
+        String nickname = userDTO.getNickname();
+        String password = DigestUtils.md5DigestAsHex(userDTO.getPassword().getBytes());
+        String avatar = userDTO.getAvatar();
+        user.setId(userDTO.getId());
+        user.setUsername(username);
+        user.setNickname(nickname);
+        user.setPassword(password);
+        user.setAvatar(avatar);
+        return userMapper.updateUser(user);
     }
 
-//    public int updateUser(UpdateUserDTO updateUserDTO) {
-//        return userMapper.updateUser(updateUserDTO);
-//    }
-
-    public String login(UserDTO userDTO, String ip) {
+    public String login(UserDTO userDTO, HttpServletRequest httpServletRequest) {
         User user = userMapper.selectByName(userDTO.getUsername());
+        String password = DigestUtils.md5DigestAsHex(userDTO.getPassword().getBytes());
         if (user == null) {
             throw new BlogException(BlogExceptionEnum.USER_NOT_EXIST);
-        } else if (!Objects.equals(user.getPassword(), userDTO.getPassword())) {
+        } else if (!Objects.equals(user.getPassword(), password)) {
             throw new BlogException(BlogExceptionEnum.PASSWORD_ERROR);
         }
         // 生成token
+        String ip = Toolkit.getIpAddr(httpServletRequest);
         String userId = user.getId() + "";
         String username = user.getUsername();
         String nickname = user.getNickname();
-        String jwtToken = JwtUtil.createToken(userId, username, nickname);
+        String jwtToken = jwtUtil.createToken(userId, username, nickname);
+        // TODO: 缓存token到redis中(实现注销, 单设备登录)
+        redisUtils.set(userId, jwtToken, Constant.REDIS_CACHE_MINUTES, TimeUnit.MINUTES);
         // 更新token和请求ip信息
         User updateUser = new User();
         updateUser.setId(user.getId());
@@ -92,7 +116,6 @@ public class UserService {
 //        System.out.println(date.toString());
         updateUser.setLast_login_time(date);
         userMapper.updateUser(updateUser);
-        // TODO: 刷新token，老token加入黑名单，实现单设备登录
         // 记录登录信息
         LoginLog loginLog = new LoginLog();
         loginLog.setLogin_name(username);
@@ -102,10 +125,24 @@ public class UserService {
     }
 
     public int register(UserDTO userDTO) {
+        String username = userDTO.getUsername();
+        User findUser = userMapper.selectByName(username);
+        if (findUser != null) {
+            throw new BlogException(BlogExceptionEnum.USER_IS_EXIST);
+        }
         UserDTO user = new UserDTO();
-        user.setUsername(userDTO.getUsername());
-        user.setPassword(userDTO.getPassword());
-        return userMapper.insertSelective(user);
+        String nickname = userDTO.getNickname();
+        String password = DigestUtils.md5DigestAsHex(userDTO.getPassword().getBytes());
+        String avatar = userDTO.getAvatar();
+        user.setUsername(username);
+        user.setNickname(nickname);
+        user.setPassword(password);
+        user.setAvatar(avatar);
+        Integer response = userMapper.insertSelective(user);
+        if (response == null) {
+            throw new BlogException(BlogExceptionEnum.CREATE_FAILED);
+        }
+        return response;
     }
 
     public int delete(Integer id) {

@@ -65,29 +65,29 @@
             <if test="username != null">
                 username,
             </if>
+            <if test="nickname != null">
+                nickname,
+            </if>
             <if test="password != null">
                 `password`,
             </if>
-            <!-- <if test="create_time != null">
-                create_time,
+            <if test="avatar != null">
+                avatar,
             </if>
-            <if test="update_time != null">
-                update_time,
-            </if> -->
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="username != null">
                 #{username,jdbcType=VARCHAR},
             </if>
+            <if test="nickname != null">
+                #{nickname,jdbcType=VARCHAR},
+            </if>
             <if test="password != null">
                 #{password,jdbcType=VARCHAR},
             </if>
-            <!-- <if test="create_time != null">
-                #{createTime,jdbcType=TIMESTAMP},
+            <if test="avatar != null">
+                #{avatar,jdbcType=VARCHAR},
             </if>
-            <if test="update_time != null">
-                #{updateTime,jdbcType=TIMESTAMP},
-            </if> -->
         </trim>
     </insert>
 

@@ -4,9 +4,15 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Constant {
+    public static final String USER_ID = "id";
     public static final String USER_NAME = "username";
     public static final String NICK_NAME = "nickname";
     public static final String ARTICLE_LIST = "article_list";
+
+    public static final Integer REDIS_CACHE_MINUTES = 300;
+
+    public static final Integer REDIS_TOKEN_VALID_MINUTES = 300;
+    public static final Integer REDIS_CACHE_SECONDS = 20;
 
     public static final String FILE_PATH = "C:\\Users\\Administrator\\Desktop\\demo\\src\\upload";
 

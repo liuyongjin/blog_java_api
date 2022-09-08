@@ -14,6 +14,7 @@ public enum BlogExceptionEnum {
     DELETE_FAILED(10013, "删除失败"),
     USER_NOT_EXIST(10014, "用户不存在"),
 
+    USER_IS_EXIST(10015, "用户已存在"),
     PASSWORD_ERROR(10015, "密码错误"),
     SYSTEM_ERROR(20000, "系统异常，请从控制台或日志中查看具体错误信息");
     /**

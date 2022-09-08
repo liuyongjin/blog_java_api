@@ -34,7 +34,7 @@ public class JwtUtil {
      */
     public static String createToken(String userId, String username, String nickname) {
         Calendar nowTime = Calendar.getInstance();
-        nowTime.add(Calendar.MINUTE, 300);
+        nowTime.add(Calendar.MINUTE, Constant.REDIS_TOKEN_VALID_MINUTES);
         Date expiresDate = nowTime.getTime();
 
         return JWT.create().withAudience(userId)   //签发对象

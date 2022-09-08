@@ -1,11 +1,13 @@
 package com.example.demo.model.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import java.util.Date;
 import java.util.List;
 
 @Data
+@JsonIgnoreProperties(value = {"password"})
 public class User {
     private Integer id;
 
