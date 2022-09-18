@@ -3,6 +3,8 @@ package com.example.demo.util;
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Calendar;
+import java.util.Date;
 
 public class Toolkit {
 
@@ -59,4 +61,34 @@ public class Toolkit {
     }
 
 
+    /**
+     *  获取当前月第一天
+     * @param dt
+     * @return
+     */
+    public static Date getFirstMonthDay(Date dt) {
+        Calendar ca = Calendar.getInstance();
+        ca.setTime(dt);
+        // ca.add(Calendar.MONTH, 0); 此方法可以获取前n月或后n月
+        ca.set(Calendar.DAY_OF_MONTH, 1);//设置为1号,当前日期既为本月第一天
+        ca.set(Calendar.HOUR, 0);
+        ca.set(Calendar.MINUTE, 0);
+        ca.set(Calendar.SECOND, 0);
+        return ca.getTime();
+    }
+
+    /**
+     *  获取当前月最后一天
+     * @param dt
+     * @return
+     */
+    public static Date getLastMonthDay(Date dt) {
+        Calendar ca = Calendar.getInstance();
+        ca.setTime(dt);
+        ca.set(Calendar.DAY_OF_MONTH, ca.getActualMaximum(Calendar.DAY_OF_MONTH));
+        ca.set(Calendar.HOUR, 23);
+        ca.set(Calendar.MINUTE, 59);
+        ca.set(Calendar.SECOND, 59);
+        return ca.getTime();
+    }
 }

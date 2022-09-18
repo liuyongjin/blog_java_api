@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
+import java.util.List;
 
 @Data
 public class ArticleDTO {
@@ -38,5 +39,7 @@ public class ArticleDTO {
     private Integer praise_count;
 
     private Integer browse_count;
+
+    private List<Integer> tag_ids ;
 
 }

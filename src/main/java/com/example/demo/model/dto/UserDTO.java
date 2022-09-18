@@ -27,7 +27,7 @@ public class UserDTO {
 
     private String nickname;
 
-    @NotNull(message = "密码不能为空", groups = {UserDTO.Login.class, UserDTO.Insert.class, UserDTO.Update.class})
+    @NotNull(message = "密码不能为空", groups = {UserDTO.Login.class, UserDTO.Insert.class})
     private String password;
 
     private String token;

@@ -6,6 +6,7 @@ import com.example.demo.model.dto.ArticleDTO;
 import com.example.demo.model.dto.GetArticleDTO;
 import com.example.demo.model.pojo.Article;
 import com.example.demo.service.ArticleService;
+import com.example.demo.util.PassToken;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -30,12 +31,35 @@ public class ArticleController {
     /**
      * 查询文章列表
      */
+    @PassToken
     @RequestMapping("/list")
     public ApiResponse getArticleList(@Valid GetArticleDTO getArticleDTO) {
         PageInfo articleList = articleService.getArticleList(getArticleDTO.getPageIndex(), getArticleDTO.getPageSize());
         return ApiResponse.success(articleList);
     }
 
+    @PassToken
+    @PostMapping("search")
+    public ApiResponse getSearchArticleList(@Valid GetArticleDTO getArticleDTO) {
+        PageInfo articleList = articleService.getSearchArticleList(getArticleDTO);
+        return ApiResponse.success(articleList);
+    }
+
+    @PassToken
+    @PostMapping("pigeonhole")
+    public ApiResponse getPigeonholeArticleList() {
+        PageInfo articleList = articleService.getPigeonholeArticleList();
+        return ApiResponse.success(articleList);
+    }
+
+    @PassToken
+    @PostMapping("randomList")
+    public ApiResponse getRandomArticleList(GetArticleDTO getArticleDTO) {
+        PageInfo articleList = articleService.getRandomArticleList(getArticleDTO);
+        return ApiResponse.success(articleList);
+    }
+
+    @PassToken
     @RequestMapping("/detail")
     public ApiResponse getArticleDetail(@NotNull(message = "id不能为空") Integer id) {
         Article response = articleService.getArticleDetail(id);
@@ -45,6 +69,12 @@ public class ArticleController {
     @PostMapping("/add")
     public ApiResponse addArticle(@Validated(ArticleDTO.Insert.class) ArticleDTO articleDTO) {
         Integer response = articleService.addArticle(articleDTO);
+        return ApiResponse.success(response);
+    }
+
+    @PostMapping("/update")
+    public ApiResponse updateArticle(@Validated(ArticleDTO.Update.class) ArticleDTO articleDTO) {
+        Integer response = articleService.updateArticle(articleDTO);
         return ApiResponse.success(response);
     }
 

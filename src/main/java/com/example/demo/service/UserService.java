@@ -72,16 +72,22 @@ public class UserService {
     //    public User selectByName(String username) {
 //        return userMapper.selectByName(username);
 //    }
-    public int updateUser(UserDTO userDTO) {
+    public int updateUser(UserDTO userDTO, Integer userId) {
         User user = new User();
         String username = userDTO.getUsername();
+        User findUser = userMapper.selectByName(username);
+        if (findUser != null) {
+            throw new BlogException(BlogExceptionEnum.USER_IS_EXIST);
+        }
         String nickname = userDTO.getNickname();
-        String password = DigestUtils.md5DigestAsHex(userDTO.getPassword().getBytes());
+        String password = userDTO.getPassword();
         String avatar = userDTO.getAvatar();
-        user.setId(userDTO.getId());
+        user.setId(userId);
         user.setUsername(username);
         user.setNickname(nickname);
-        user.setPassword(password);
+        if (password != null) {
+            user.setPassword(DigestUtils.md5DigestAsHex(password.getBytes()));
+        }
         user.setAvatar(avatar);
         return userMapper.updateUser(user);
     }
@@ -113,7 +119,6 @@ public class UserService {
 //        calendar.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
 //        System.out.println(calendar.getTime().toString());
 //        Date date = new Date();
-//        System.out.println(date.toString());
         updateUser.setLast_login_time(date);
         userMapper.updateUser(updateUser);
         // 记录登录信息

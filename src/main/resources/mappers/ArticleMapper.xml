@@ -27,10 +27,57 @@
         -- left join blog_tag as t on t.id=ta.tag_id
     </select>
 
+    <select id="selectShelvesArticleList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from blog_article
+        where status = 1
+    </select>
+
     <select id="selectArticleById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from blog_article where id = #{id, jdbcType=INTEGER}
+    </select>
+
+    <select id="selectArticleByTitleOrTags" parameterType="java.lang.String"
+            resultType="com.example.demo.model.pojo.Article">
+        -- select a.*, (select group_concat(name) from blog_tag where id = ta.tag_id) as tags
+        select a.*
+        from blog_article a
+        left join blog_tag_article ta on a.id = ta.article_id
+        <where>
+            <if test="title != null">
+                a.title like #{title}
+            </if>
+            <if test="tag_ids != null">
+                and ta.tag_id in
+                <foreach collection="tag_ids" close=")" item="item" open="(" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+            and a.status = 1
+        </where>
+
+    </select>
+
+    <select id="selectArticleListByTimeDesc" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from blog_article
+        <where>
+            <if test="start_time != null &amp;&amp; end_time != null ">
+                create_time between #{start_time} and #{end_time}
+            </if>
+        </where>
+        order by create_time desc
+    </select>
+
+    <select id="selectRandomArticle" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from blog_article
+        order by rand()
     </select>
 
     <insert id="addArticle" parameterType="com.example.demo.model.dto.ArticleDTO">
@@ -88,6 +135,37 @@
             </if>
         </trim>
     </insert>
+
+    <update id="updateArticle" parameterType="com.example.demo.model.pojo.Article">
+        update blog_article
+        <set>
+            <if test="title != null">
+                title = #{title, jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status, jdbcType=INTEGER},
+            </if>
+            <if test="des != null">
+                des = #{des, jdbcType=VARCHAR},
+            </if>
+            <if test="main_img != null">
+                main_img = #{main_img, jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                content = #{content, jdbcType=VARCHAR},
+            </if>
+            <if test="comment_count != null">
+                comment_count = #{comment_count, jdbcType=INTEGER},
+            </if>
+            <if test="praise_count != null">
+                praise_count = #{praise_count, jdbcType=INTEGER},
+            </if>
+            <if test="browse_count != null">
+                browse_count = #{browse_count, jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 
     <delete id="delArticle" parameterType="java.lang.Integer">
         delete

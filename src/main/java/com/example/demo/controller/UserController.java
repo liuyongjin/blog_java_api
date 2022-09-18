@@ -34,10 +34,9 @@ public class UserController {
     RedisUtils redisUtils;
 
     @PostMapping("/currentUser")
-    public ApiResponse currentUser(HttpServletRequest request) {
-        String id = (String) request.getAttribute(Constant.USER_ID);
+    public ApiResponse currentUser(HttpServletRequest httpServletRequest) {
+        String id = (String) httpServletRequest.getAttribute(Constant.USER_ID);
         Integer userId = Integer.valueOf(id);
-        System.out.println(userId);
         User response = userService.selectById(userId);
         return ApiResponse.success(response);
     }
@@ -51,8 +50,10 @@ public class UserController {
 
     @ResponseBody
     @PostMapping("/update")
-    public ApiResponse updateUser(@Validated(UserDTO.Insert.class) UserDTO userDTO) {
-        int response = userService.updateUser(userDTO);
+    public ApiResponse updateUser(@Validated(UserDTO.Update.class) UserDTO userDTO, HttpServletRequest httpServletRequest) {
+        String id = (String) httpServletRequest.getAttribute(Constant.USER_ID);
+        Integer userId = Integer.valueOf(id);
+        int response = userService.updateUser(userDTO, userId);
         return ApiResponse.success(response);
     }
 
